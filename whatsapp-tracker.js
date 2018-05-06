@@ -37,10 +37,10 @@ const trackerFunction = () => {
 
                     const date = new Date().toISOString().split("T");
                     const currentTime = `Log at {${date[0]}T${date[1].split(".")[0]}} ->`;
-                    const currentLog = `${currentTime} Person: {${conversationName}} Hour: {${conversationHour}} Message: {${conversationMessage}} {${itsOwnMessage}}`;
+                    const currentLog = `${currentTime} Person: {${conversationName}} Hour: {${conversationHour}} Message: {${conversationMessage.replace(/(?:\r\n|\r|\n)/g, " -- linebreak -- ")}} {${itsOwnMessage}}`;
 
                     if (logHistory.indexOf(currentLog) == -1) {
-                        logHistory += "\n" + currentLog;
+                        logHistory += currentLog + "\n";
                     }
 
                     //console.log(currentLog);
@@ -135,7 +135,7 @@ const filterBy = (types = ['all'], value = "", sort = false) => {
         if (sort) {
             logs.value = logs.value.sort(a, b => new Date(normalize(a.match(regex))) - new Date(normalize(a.match(regex))))
         }
-
+        
         return logs;
     }
 }
