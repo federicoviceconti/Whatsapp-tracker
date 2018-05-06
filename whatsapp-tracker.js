@@ -153,7 +153,6 @@ const outputItemsNormalized = (items) => {
             const len = str.length;
             const idx = splittedItem[0].indexOf(str) + len;
 
-            console.log(idx)
             results = [...results, {
                 logTime: splittedItem[0].substring(idx),
                 name: (splittedItem[1] || '').trim(),
