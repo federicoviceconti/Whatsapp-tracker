@@ -35,8 +35,8 @@ const trackerFunction = () => {
                     const classStatus = "status-";
                     const itsOwnMessage = ownMessage.indexOf(classOwn) > 0 && ownMessage.indexOf(classStatus) > 0 ? '(own)' : '(not-own)';
 
-                    const date = new Date();
-                    const currentTime = `Log at {${days[date.getUTCDay()]} ${months[date.getUTCMonth()]} ${date.getFullYear()}T${date.getHours()}:${date.getMinutes()}} ->`;
+                    const date = new Date().toISOString().split("T");
+                    const currentTime = `Log at {${date[0]}T${date[1].split(".")[0]}} ->`;
                     const currentLog = `${currentTime} Person: {${conversationName}} Hour: {${conversationHour}} Message: {${conversationMessage}} {${itsOwnMessage}}`;
 
                     if (logHistory.indexOf(currentLog) == -1) {
@@ -91,7 +91,7 @@ const filterArray = [
  * @param {array} types array of string which contains value into filterArray's label
  * @param {string} value value is the index in the line (represented by curly braces)
  */
-const filterBy = (types = ['all'], value = "") => {
+const filterBy = (types = ['all'], value = "", sort = false) => {
     let logs = {
         filter: [],
         value: []
@@ -132,6 +132,10 @@ const filterBy = (types = ['all'], value = "") => {
             }
         }
 
+        if (sort) {
+            logs.value = logs.value.sort(a, b => new Date(normalize(a.match(regex))) - new Date(normalize(a.match(regex))))
+        }
+
         return logs;
     }
 }
@@ -140,6 +144,6 @@ const filterBy = (types = ['all'], value = "") => {
 setInterval(trackerFunction, 10000);
 setTimeout(trackerFunction, 3000);
 
-const normalize = (log) => log.replace("{", "").replace("}", "");
+const normalize = (log) => log.replace(/\{/g, "").replace(/\}/g, "");
 
 const printAllHistory = () => logHistory;
