@@ -1,4 +1,4 @@
-const confirm = prompt("Are you sure to records your messages? Type 'agree'");
+const confirm = prompt("Do you agree to records your messages on your machine? Type 'agree'");
 
 if (confirm.toLowerCase() === "agree") {
     const fatherNode = "_2EXPL", waWeb = "_1FKgS app-wrapper-web bN4GZ";
