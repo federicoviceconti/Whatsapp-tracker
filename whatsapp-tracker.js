@@ -6,8 +6,9 @@ const getConversations = () => document.getElementsByClassName(fatherNode);
 let conversations = undefined;
 let logHistory = "";
 
-const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+/* const messageTraker = new MessageTracker();
+messageTraker.subscribe((items) => `An update occur: ${JSON.stringify(items)}`); */
+
 
 console.log('--- Start ---')
 const trackerFunction = () => {
@@ -42,7 +43,8 @@ const trackerFunction = () => {
                     const currentLog = `{${conversationName}} ${splitNormalize} {${conversationHour}} ${splitNormalize} {${conversationMessage.replace(/(?:\r\n|\r|\n)/g, " -- linebreak -- ")}} ${splitNormalize} {${itsOwnMessage}}`;
 
                     if (logHistory.indexOf(currentLog) == -1) {
-                        logHistory += `${currentTime} ${currentLog}\n`;
+                        const len = logHistory.length;
+                        logHistory += `${len !== 0 ? '\n' : ''} ${currentTime} ${currentLog}`;
                     }
 
                     //console.log(currentLog);
@@ -156,8 +158,8 @@ const outputItemsNormalized = (items) => {
             results = [...results, {
                 logTime: splittedItem[0].substring(idx),
                 name: (splittedItem[1] || '').trim(),
-                message: (splittedItem[2] || '').trim(),
-                time: (splittedItem[3] || '').trim(),
+                time: (splittedItem[2] || '').trim(),
+                message: (splittedItem[3] || '').trim(),
                 own: (splittedItem[4] || '').trim()
             }]
         }
