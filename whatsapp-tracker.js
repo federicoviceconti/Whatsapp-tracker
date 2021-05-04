@@ -1,16 +1,8 @@
-const confirm = prompt("Do you agree to records your messages on your machine? Yes, type 'agree' in the input below.");
 const fatherNode = "_2EXPL", waWeb = "_1FKgS app-wrapper-web bN4GZ";
 const splitNormalize = "[-split-]"
-const getConversations = () => document.getElementsByClassName(fatherNode);
-
 let conversations = undefined;
 let logHistory = "";
 
-/* const messageTraker = new MessageTracker();
-messageTraker.subscribe((items) => `An update occur: ${JSON.stringify(items)}`); */
-
-
-console.log('--- Start ---')
 const trackerFunction = () => {
     conversations = getConversations();
 
@@ -21,23 +13,20 @@ const trackerFunction = () => {
     } else {
         console.log("Conversation elements observed are:", conversations.length);
         for (const conversation of conversations) {
-            //------ Get the conversation element (Contains the child)
+            // Get the conversation element (Contains the child)
             const conversationElement = conversation.children[1];
 
             const callback = (mutationsList) => {
                 if (mutationsList.length > 2) {
-                    //------ Get the conversation piece (name and message)
+                    // Get the conversation piece (name and message)
                     const conversationMessageElement = conversationElement.lastChild.firstChild.firstChild
                     const conversationName = conversationElement.firstChild.firstChild.firstChild.title;
                     const conversationHour = conversationElement.firstChild.lastChild.innerText;
                     const conversationMessage = conversationMessageElement.title;
-
                     const ownMessage = conversationElement.lastChild.firstChild.innerHTML;
-
                     const classOwn = "_1VfKB"
                     const classStatus = "status-";
                     const itsOwnMessage = ownMessage.indexOf(classOwn) > 0 && ownMessage.indexOf(classStatus) > 0 ? '(own)' : '(not-own)';
-
                     const date = new Date().toISOString().split("T");
                     const currentTime = `Log at {${date[0]}T${date[1].split(".")[0]}} ${splitNormalize} `;
                     const currentLog = `{${conversationName}} ${splitNormalize} {${conversationHour}} ${splitNormalize} {${conversationMessage.replace(/(?:\r\n|\r|\n)/g, " -- linebreak -- ")}} ${splitNormalize} {${itsOwnMessage}}`;
@@ -46,9 +35,6 @@ const trackerFunction = () => {
                         const len = logHistory.length;
                         logHistory += `${len !== 0 ? '\n' : ''} ${currentTime} ${currentLog}`;
                     }
-
-                    //console.log(currentLog);
-                    //console.log("Other log", mutationsList)
                 }
             };
 
@@ -67,11 +53,13 @@ const trackerFunction = () => {
                 //Attach new elements
                 observer.observe(conversationElement.lastChild, options);
             } catch (error) {
-                console.log("You need to stay in menù page. In search function, tracker currently doesn't work")
+                console.log("You need to stay in menù page. In other section, the tracker doesn't work")
             }
         }
     }
 };
+
+const getConversations = () => document.getElementsByClassName(fatherNode);
 
 const filterArray = [
     [
@@ -172,13 +160,19 @@ const outputItemsNormalized = (items) => {
 }
 
 const normalize = (log) => log.replace(/\{/g, "").replace(/\}/g, "");
+
 const printAllHistory = () => logHistory;
 
-//Start
-if (confirm.toLowerCase() === "agree") {
-    //TODO Create extension to start
-    setInterval(trackerFunction, 10000);
-    setTimeout(trackerFunction, 3000);
-} else {
-    console.log("The script doesn't have the permission to run!");
+const main = () => {
+    const confirm = prompt("Do you agree to records your messages on your machine? Yes, type 'agree' in the input below.");
+    if (confirm.toLowerCase() === "agree") {
+        console.log('--- Start ---')
+        setInterval(trackerFunction, 10000);
+        setTimeout(trackerFunction, 3000);
+    } else {
+        console.log("The script doesn't have the permission to run!");
+    }
 }
+
+//Entry point
+main();
